@@ -2,40 +2,44 @@ import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 
+const getRandomColor = () => {
+  const digits = [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+  ];
+  const color = new Array(6)
+    .fill("")
+    .map(() => digits[Math.floor(Math.random() * digits.length)])
+    .join("");
+
+  return `#${color}`;
+};
+
+enum Result {
+  Correct,
+  Wrong,
+}
+
 function App() {
   const [color, setColor] = useState("");
   const [answers, setAnswers] = useState<string[]>([]);
-  const [isWrongSelection, setIsWrongSelection] = useState(false);
+  const [result, setResult] = useState<Result | undefined>(undefined);
 
-  const getRandomColor = () => {
-    const digits = [
-      "0",
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "A",
-      "B",
-      "C",
-      "D",
-      "E",
-      "F",
-    ];
-    const color = new Array(6)
-      .fill("")
-      .map(() => digits[Math.floor(Math.random() * digits.length)])
-      .join("");
-
-    return `#${color}`;
-  };
-
-  useEffect(() => {
-    // TODO : generate random colors
+  const generateRandomColour = () => {
     const actualColor = getRandomColor();
     setColor(actualColor);
     setAnswers(
@@ -43,15 +47,21 @@ function App() {
         () => 1 - Math.random()
       )
     );
+  };
+
+  useEffect(() => {
+    generateRandomColour();
+    // TODO : generate random colors
   }, []);
 
-  function handleAnswerClicked(answer: string) {
+  const handleAnswerClicked = (answer: string) => {
     if (answer === color) {
-      setIsWrongSelection(false);
+      setResult(Result.Correct);
+      generateRandomColour();
     } else {
-      setIsWrongSelection(true);
+      setResult(Result.Wrong);
     }
-  }
+  };
 
   return (
     <div className="App">
@@ -62,7 +72,8 @@ function App() {
             {answer}
           </button>
         ))}
-        {isWrongSelection && <div className="Wrong">Wrong Answer!</div>}
+        {result === Result.Wrong && <div className="Wrong">Wrong Answer</div>}
+        {result === Result.Correct && <div className="correct">Correct!!</div>}
       </div>
     </div>
   );
