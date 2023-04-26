@@ -4,6 +4,7 @@ import "./App.css";
 
 function App() {
   const [color, setColor] = useState("");
+  const [answers, setAnswers] = useState<string[]>([]);
 
   const getRandomColor = () => {
     const digits = [
@@ -34,12 +35,23 @@ function App() {
 
   useEffect(() => {
     // TODO : generate random colors
-    setColor(getRandomColor());
+    const actualColor = getRandomColor();
+    setColor(actualColor);
+    setAnswers(
+      [actualColor, getRandomColor(), getRandomColor()].sort(
+        () => 1 - Math.random()
+      )
+    );
   }, []);
 
   return (
     <div className="App">
-      <div className="guess-me" style={{ background: color }}></div>
+      <div>
+        <div className="guess-me" style={{ background: color }}></div>
+        {answers.map((answer) => (
+          <button key={answer}>{answer}</button>
+        ))}
+      </div>
     </div>
   );
 }

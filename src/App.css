@@ -7,5 +7,15 @@
 
 .guess-me {
   height: 200px;
-  width: 200px;
+  width: 298px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 4px;
+  font-size: 18px;
+}
+
+button + button {
+  margin-left: 20px;
 }
