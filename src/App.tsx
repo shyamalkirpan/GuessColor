@@ -44,7 +44,7 @@ function App() {
     setColor(actualColor);
     setAnswers(
       [actualColor, getRandomColor(), getRandomColor()].sort(
-        () => 1 - Math.random()
+        () => 0.5 - Math.random()
       )
     );
   };
